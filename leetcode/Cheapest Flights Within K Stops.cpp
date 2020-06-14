@@ -14,8 +14,8 @@ public:
         int ans = -1;
         
         for (int i = 0; i < n; i++)
-            used[i] = false;
-        used[src] = 0;
+            used[i] = INT_MAX;
+        used[src] = -1;
         
         for (auto f : flights)
             g[f[0]].push_back({f[1],f[2]});
@@ -25,14 +25,13 @@ public:
         
         while (!que.empty()) {
             auto top = que.top();
-            que.pop();      
-			used[top.id] = true;     
+            que.pop();        
             if (top.id == dst)
                 return top.rank;
             
             for (auto p : g[top.id]) {
                 int dis = top.rank + p.second;
-                if (used[p.first] == false && top.stops < K)
+                if (used[p.first] >= dis && top.stops < K)
                     que.push({dis,p.first,top.stops+1});
             }
         }
