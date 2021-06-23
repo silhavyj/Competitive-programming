@@ -3,41 +3,33 @@
  * struct ListNode {
  *     int val;
  *     ListNode *next;
- *     ListNode(int x) : val(x), next(NULL) {}
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
 class Solution {
 public:
-    ListNode* reverseBetween(ListNode* head, int m, int n) {
-        if (head == NULL)
-            return NULL;
-        
-        int i = 1;
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
         ListNode *curr = head;
-        vector<int> nums;
-        stack<int> st;
-        
-        while (curr != NULL) {
-            if (i >= m && i <= n) {
-                st.push(curr->val);
-                if (i == n) {
-                    while (!st.empty()) {
-                        nums.push_back(st.top());
-                        st.pop();
-                    }
-                }
-            }
-            else nums.push_back(curr->val);
-            curr = curr->next;
-            i++;
-        }
-        
-        ListNode *res = new ListNode(nums[0]);
-        curr = res;
-        for (int i = 1; i < nums.size(); i++) {
-            curr->next = new ListNode(nums[i]);
+        ListNode *start = head;
+        for (int i = 0; i < left-1; i++) {
+            start = curr;
             curr = curr->next;
         }
-        return res;
+        ListNode *first = curr;
+        ListNode *last = curr;
+        for (int i = left; i < right; i++) {
+            curr = last->next;
+            if (curr == NULL)
+                break;
+            last->next = last->next->next;
+            curr->next = first;
+            first = curr;
+        }
+        if (left == 1)
+            return first;
+        start->next = first;
+        return head;
     }
 };
