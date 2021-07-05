@@ -1,24 +1,19 @@
 class Solution {
 public:
-    vector<vector<int>> matrixReshape(vector<vector<int>>& nums, int r, int c) {
-        vector<int> vals;
-        
-        for (auto row : nums)
-            for (int x : row)
-                vals.push_back(x);
-        
-        vector<vector<int>> res;
-        int p = 0;
-        
+    vector<vector<int>> matrixReshape(vector<vector<int>>& mat, int r, int c) {
+        int n = mat.size();
+        int m = mat[0].size();
+        if (n*m != r*c)
+            return mat;
+        vector<vector<int>> ans;
         for (int i = 0; i < r; i++) {
             vector<int> row;
             for (int j = 0; j < c; j++) {
-                if (p == vals.size())
-                    return nums;
-                row.push_back(vals[p++]);
+                int s = i*c+j;
+                row.push_back(mat[s/m][s%m]);
             }
-            res.push_back(row);
+            ans.push_back(row);
         }
-        return res;
+        return ans;
     }
 };
