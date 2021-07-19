@@ -6,7 +6,8 @@ vector<string> __split(const string& s, char c) {
     stringstream ss(s);
     string x;
     while (getline(ss, x, c))
-        v.emplace_back(x);
+        if (x!="")
+            v.emplace_back(x);
     return move(v);
 }
 template<typename T, typename... Args>
