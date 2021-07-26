@@ -4,35 +4,29 @@
  *     int val;
  *     TreeNode *left;
  *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
 class Solution {
-public:
     
-    TreeNode *root = NULL;
-    
-    TreeNode *add(TreeNode *node, int val) {
-        if (node == NULL)
-            return new TreeNode(val);
-        if (val < node->val)
-            node->left = add(node->left, val);
-        else node->right = add(node->right, val);
+    TreeNode *create(vector<int> &nums, int l, int r) {
+        if (r == l)
+            return new TreeNode(nums[l]);
+        if (r < l)
+            return NULL;
+        int m = l + (r-l) / 2;
+        if ((r-l+1) & 1 == 0)
+            m++;
+        TreeNode *node = new TreeNode(nums[m]);
+        node->left = create(nums, l, m-1);
+        node->right = create(nums, m+1, r);
         return node;
     }
-     
-    void solve(vector<int>& nums, int left, int right) {
-        if (left > right)
-            return;
-        
-        int mid = (left + right) / 2;
-        root = add(root, nums[mid]);
-        solve(nums, left, mid-1);
-        solve(nums, mid+1, right);
-    }
     
+public:
     TreeNode* sortedArrayToBST(vector<int>& nums) {
-        solve(nums, 0, nums.size()-1);
-        return root;
+        return create(nums, 0, nums.size()-1);
     }
 };
