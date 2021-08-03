@@ -11,21 +11,13 @@
  */
 class Solution {
 public:
-    
-    TreeNode* solve(TreeNode *root) {
-        if (root == NULL)
-            return NULL;
-            
-        if (root->left == NULL && root->right == NULL)
-            return new TreeNode(root->val);
-        
-        TreeNode *r = new TreeNode(root->val);
-        r->left = solve(root->right);
-        r->right = solve(root->left);
-        return r;
-    }
-    
     TreeNode* invertTree(TreeNode* root) {
-        return root == NULL ? NULL : solve(root);
+        if (root==NULL)
+            return NULL;
+        TreeNode *left = invertTree(root->right);
+        TreeNode *right = invertTree(root->left);
+        root->left = left;
+        root->right = right;
+        return root;
     }
 };
