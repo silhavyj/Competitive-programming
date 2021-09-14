@@ -1,19 +1,13 @@
 class Solution {
 public:
-    string reverseOnlyLetters(string S) {
-        string r = "";
-        for (auto s : S)
-            if ((s >= 'a' && s <= 'z') || (s >= 'A' && s <= 'Z'))
-                r += s;
-        reverse(r.begin(),r.end());
-        int i = 0, j = 0;
-        string ans = "";
-        while (i != S.length()) {
-            if ((S[i] >= 'a' && S[i] <= 'z') || (S[i] >= 'A' && S[i] <= 'Z') && j < r.length())
-                ans += r[j++];
-            else ans += S[i];
-            i++;
-        }
-        return ans;
+    string reverseOnlyLetters(string s) {
+        vector<int> pos;
+        for (int i = 0; i < s.length(); i++)
+            if (isalpha(s[i]))
+                pos.push_back(i);
+        int n = pos.size();
+        for (int i = 0; i < n/2; i++)
+            swap(s[pos[i]], s[pos[n-i-1]]);
+        return s;
     }
 };
